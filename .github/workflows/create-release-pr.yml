@@ -1,0 +1,30 @@
+name: Create a release PR
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.0
+
+      - name: Creates a release PR
+        env:
+          GIT_PR_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_PR_RELEASE_BRANCH_PRODUCTION: main
+          GIT_PR_RELEASE_BRANCH_STAGING: develop
+          TZ: Asia/Tokyo
+        run: |
+          gem install -N git-pr-release -v "2.2.0"
+          git-pr-release --no-fetch
