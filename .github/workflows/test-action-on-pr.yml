@@ -6,7 +6,8 @@ on:
       - opened
       - synchronize
       - reopened
-
+  repository_dispatch:
+    types: [pull_request_opened]
 jobs:
   lint-frontend:
     runs-on: ubuntu-latest
